@@ -28,6 +28,7 @@ extern struct ConstantsAndUnits {
   const double W           = J/s;                         // Watt
   const double Mpc         = 3.08567758e22 * m;           // Megaparsec
   const double eV          = 1.60217653e-19 * J;          // Electronvolt
+  const double Gyr         = 1./(1e9*365*24*3600 * s);    // Gigayear per second
   
   // Physical constants    
   const double k_b         = 1.38064852e-23 * J/K;        // Bolzmanns constant

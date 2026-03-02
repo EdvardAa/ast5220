@@ -42,7 +42,7 @@ int main(int argc, char **argv){
 
   // Do the supernova fits. Uncomment when you are ready to run this
   // Make sure you read the comments on the top of src/SupernovaFitting.h
-  // mcmc_fit_to_supernova_data("data/supernovadata.txt", "results_supernovafitting.txt");
+  mcmc_fit_to_supernova_data("data/supernovadata.txt", "results_supernovafitting.txt");
 
   // Remove when module is completed
   return 0;
@@ -91,3 +91,6 @@ int main(int argc, char **argv){
 
   Utils::EndTiming("Everything");
 }
+
+// How to compile:
+// g++ Main.cpp BackgroundCosmology.cpp Utils.cpp Spline.cpp ODESolver.cpp -std=c++20 -I. -L$HOME/local/gsl-2.6/lib -lgsl -lgslcblas -lm -o name_of_executable
