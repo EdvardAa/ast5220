@@ -12,6 +12,14 @@ using Vector = std::vector<double>;
 class RecombinationHistory{
   private:
 
+    //Constants we pre-compute and store in this class
+    double pi;
+    double H0;
+    double rho_c0;
+    double Lambda_alpha_coefficient;
+    double beta_coefficient;
+    double alpha_coefficient;
+
     // The cosmology we use
     BackgroundCosmology *cosmo = nullptr;
     
@@ -23,7 +31,7 @@ class RecombinationHistory{
     const double x_end    = Constants.x_end;
     
     // Numbers of points of Xe,ne array (modify as you see fit)
-    const int npts_rec_arrays = 4000;
+    const int npts_rec_arrays = 40000;
   
     // Xe for when to switch between Saha and Peebles
     const double Xe_saha_limit = 0.99;
@@ -50,9 +58,20 @@ class RecombinationHistory{
 
     // Splines contained in this class
     Spline Xe_of_x_spline{"Xe"};
+    Spline Xe_reionization_of_x_spline{"Xe_reionization"};
     Spline Xe_saha_of_x_spline{"Xe_saha"};
     Spline tau_of_x_spline{"tau"}; 
+    Spline tau_reionization_of_x_spline{"tau_reionization"};
+    Spline tau_saha_of_x_spline{"tau_saha"};
     Spline g_tilde_of_x_spline{"g"};  
+    Spline g_tilde_reionization_of_x_spline{"g_reionization"};
+    Spline s_of_x_spline{"s"};
+    Spline s_reionization_of_x_spline{"s_reionization"};
+
+    double x_decoupling_recombination;
+    double x_decoupling_Saha_recombination;
+    double x_decoupling_scattering;
+    double x_decoupling_Saha_scattering;
 
   public:
 
@@ -81,6 +100,16 @@ class RecombinationHistory{
     double Xe_of_x(double x) const;
     double ne_of_x(double x) const;
     double get_Yp() const;
+
+    double Xe_reionization_of_x(double x) const;
+    double ne_reionization_of_x(double x) const;
+    double tau_reionization_of_x(double x) const;
+    double dtaudx_reionization_of_x(double x) const;
+    double ddtauddx_reionization_of_x(double x) const;
+    double g_tilde_reionization_of_x(double x) const;
+    double dgdx_tilde_reionization_of_x(double x) const;
+    double ddgddx_tilde_reionization_of_x(double x) const;
+    double s_of_x(double x) const;
 };
 
 #endif

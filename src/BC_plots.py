@@ -47,7 +47,7 @@ plt.title("Time as a function of x", fontsize=20)
 plt.yscale("log")
 plt.legend(fontsize=12)
 plt.tight_layout()
-plt.savefig("figures/time_vs_x.pdf")
+plt.savefig("figures1/time_vs_x.pdf")
 plt.show()
 
 plt.plot(x, dHpdx/Hp, label="dHp/dx / Hp")
@@ -58,7 +58,7 @@ plt.ylabel(r"$\frac{dH_p/dx}{H_p}$", fontsize=18)
 plt.title(r"$\frac{dH_p/dx}{H_p}$ as a function of $x$", fontsize=20)
 plt.legend(fontsize=12)
 plt.tight_layout()
-plt.savefig("figures/dHpdx_over_Hp_vs_x.pdf")
+plt.savefig("figures1/dHpdx_over_Hp_vs_x.pdf")
 plt.show()
 
 plt.plot(x, ddHpddx/Hp, label="ddHp/ddx / Hp")
@@ -69,7 +69,7 @@ plt.ylabel(r"$\frac{d^2H_p/dx^2}{dH_p/dx}$", fontsize=18)
 plt.title(r"$\frac{d^2H_p/dx^2}{dH_p/dx}$ as a function of $x$", fontsize=20)
 plt.legend(fontsize=12)
 plt.tight_layout()
-plt.savefig("figures/ddHpddx_over_Hp_vs_x.pdf")
+plt.savefig("figures1/ddHpddx_over_Hp_vs_x.pdf")
 plt.show()
 
 plt.plot(x, Hp*Mpc/(1000*100))
@@ -78,7 +78,7 @@ plt.ylabel("Hp", fontsize=18)
 plt.title(r"$H_p(x)$ ($\frac{100km}{s \cdot Mpc}$)", fontsize=18)
 plt.yscale("log")
 plt.tight_layout()
-plt.savefig("figures/Hp_vs_x.pdf")
+plt.savefig("figures1/Hp_vs_x.pdf")
 plt.show()
 
 plt.plot(x, eta*Hp/c)
@@ -86,7 +86,7 @@ plt.xlabel("x", fontsize=18)
 plt.ylabel(r"$\eta$*Hp", fontsize=18)
 plt.title(r"$\frac{\eta H_p}{c}$ as a function of $x$", fontsize=20)
 plt.tight_layout()
-plt.savefig("figures/etaHp_over_c_vs_x.pdf")
+plt.savefig("figures1/etaHp_over_c_vs_x.pdf")
 plt.show()
 
 plt.plot(x, Omega_relativistic, label="Radiation")
@@ -97,20 +97,21 @@ plt.ylabel("Omega", fontsize=18)
 plt.title("Density parameters as a function of x", fontsize=20)
 plt.legend(fontsize=12)
 plt.tight_layout()
-plt.savefig("figures/Omega_vs_x.pdf")
+plt.savefig("figures1/Omega_vs_x.pdf")
 plt.show()
 
 plt.plot(t/Gyr, np.exp(x))
 plt.xlabel("t (Gyr)", fontsize=18)
 plt.ylabel("a(t)", fontsize=18)
 plt.title("Scale factor a(t) as a function of time t", fontsize=20)
-plt.savefig("figures/a_vs_t.pdf")
+plt.savefig("figures1/a_vs_t.pdf")
 plt.show()
 
 data_supernova = np.loadtxt("results_supernovafitting.txt", skiprows=200)
 chi2 = data_supernova[:,0]
 chi2min = np.min(chi2)
 h = data_supernova[:,1]
+min_chi2_arg = np.argmin(chi2)
 OmegaM_1sigma = data_supernova[chi2 < chi2min + 3.53,2]
 OmegaK_1sigma = data_supernova[chi2 < chi2min + 3.53,3]
 OmegaLambda_1sigma = 1 - OmegaM_1sigma - OmegaK_1sigma
@@ -123,17 +124,22 @@ OmegaM = data_supernova[:,2]
 OmegaK = data_supernova[:,3]
 OmegaLambda = 1 - OmegaM - OmegaK
 
+OmegaM_best_fit = data_supernova[min_chi2_arg,2]
+OmegaK_best_fit = data_supernova[min_chi2_arg,3]
+OmegaLambda_best_fit = 1 - OmegaM_best_fit - OmegaK_best_fit
+
 OmegaM_analytical = np.linspace(0.0, 1.0, 100)
 OmegaLambda_analytical = 1.0 - OmegaM_analytical
 
 plt.plot(OmegaM_analytical, OmegaLambda_analytical, label="Flat universe", linestyle="dashed")
 plt.scatter(OmegaM_2sigma, OmegaLambda_2sigma, c='r', label=r"2$\sigma$ constraint")
 plt.scatter(OmegaM_1sigma, OmegaLambda_1sigma, c='y', label=r"1$\sigma$ constraint")
+plt.scatter(OmegaM_best_fit, OmegaLambda_best_fit, c='g', label="Best fit", marker='X', s=100)
 plt.xlabel("OmegaM", fontsize=18)
 plt.ylabel("OmegaLambda", fontsize=18)
 plt.legend(fontsize=12)
 plt.title("Density parameters as a function of OmegaM", fontsize=20)
-plt.savefig("figures/OmegaLambda_vs_OmegaM.pdf")
+plt.savefig("figures1/OmegaLambda_vs_OmegaM.pdf")
 plt.show()
 
 std_M = np.std(OmegaM_1sigma)
@@ -144,7 +150,6 @@ mean_M = np.mean(OmegaM)
 mean_K = np.mean(OmegaK)
 mean_Lambda = np.mean(OmegaLambda)
 
-min_chi2_arg = np.argmin(chi2)
 best_fit_M = data_supernova[min_chi2_arg,2]
 best_fit_K = data_supernova[min_chi2_arg,3]
 best_fit_Lambda = 1 - best_fit_M - best_fit_K
@@ -157,7 +162,7 @@ plt.xlabel("OmegaLambda", fontsize=18)
 plt.ylabel("Number of samples", fontsize=18)
 plt.title(r"Distribution of $\Omega_\Lambda$ samples", fontsize=20)
 plt.legend(fontsize=12)
-plt.savefig("figures/OmegaLambda_histogram.pdf")
+plt.savefig("figures1/OmegaLambda_histogram.pdf")
 plt.show()
 
 data_supernova = np.loadtxt("data/supernovadata.txt", skiprows=1)
@@ -169,5 +174,5 @@ plt.xlabel("Redshift z", fontsize=18)
 plt.ylabel("Luminosity distance dL (Mpc)", fontsize=18)
 plt.title("Luminosity distance as a function of redshift", fontsize=20)
 plt.legend(fontsize=12)
-plt.savefig("figures/dL_vs_z.pdf")
+plt.savefig("figures1/dL_vs_z.pdf")
 plt.show()
