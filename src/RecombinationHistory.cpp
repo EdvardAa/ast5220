@@ -78,6 +78,10 @@ void RecombinationHistory::solve_number_density_electrons(){
 
   // Calculate recombination history
   bool saha_regime = true;
+
+  double Xe_current;
+  double ne_current;
+
   for(int i = 0; i < npts_rec_arrays; i++){
 
     //==============================================================
@@ -87,8 +91,8 @@ void RecombinationHistory::solve_number_density_electrons(){
     auto Xe_ne_data = electron_fraction_from_saha_equation(x_array[i]);
 
     // Electron fraction and number density
-    const double Xe_current = Xe_ne_data.first;
-    const double ne_current = Xe_ne_data.second;
+    Xe_current = Xe_ne_data.first;
+    ne_current = Xe_ne_data.second;
     Xe_saha_arr[i] = Xe_current;
     ne_arr[i] = ne_current;
     
@@ -124,9 +128,15 @@ void RecombinationHistory::solve_number_density_electrons(){
       double f_He = Yp / (4*(1 - Yp));
       double y_reion = pow((1 + z_reion),1.5);
       double delta_y_reion = 1.5 * sqrt(1 + z_reion) * delta_z_reion;
-
+      
       // Store results and exit loop
       for(int j = i; j < npts_rec_arrays; j++){
+      auto Xe_ne_data = electron_fraction_from_saha_equation(x_array[j]);
+  
+      // Electron fraction and number density
+      Xe_current = Xe_ne_data.first;
+      ne_current = Xe_ne_data.second;
+      Xe_saha_arr[j] = Xe_current;
       Xe_arr[j] = Xe_peebles_array[j - i];
       ne_arr[j] = Xe_arr[j] * n_H0 * exp(-3*x_array[j]);
       
@@ -382,7 +392,7 @@ double RecombinationHistory::tau_of_x(double x) const{
 
 double RecombinationHistory::dtaudx_of_x(double x) const{
 
-  return -tau_of_x_spline.deriv_x(x);
+  return tau_of_x_spline.deriv_x(x);
 }
 
 double RecombinationHistory::ddtauddx_of_x(double x) const{
@@ -396,7 +406,7 @@ double RecombinationHistory::tau_reionization_of_x(double x) const{
 
 double RecombinationHistory::dtaudx_reionization_of_x(double x) const{
 
-  return -tau_reionization_of_x_spline.deriv_x(x);
+  return tau_reionization_of_x_spline.deriv_x(x);
 }
 
 double RecombinationHistory::ddtauddx_reionization_of_x(double x) const{
@@ -513,7 +523,7 @@ void RecombinationHistory::output(const std::string filename) const{
     fp << Xe_of_x(x)           << " ";
     fp << ne_of_x(x)           << " ";
     fp << tau_of_x(x)          << " ";
-    fp << dtaudx_of_x(x)       << " ";
+    fp << dtaudx_of_x(x)      << " ";
     fp << ddtauddx_of_x(x)     << " ";
     fp << g_tilde_of_x(x)      << " ";
     fp << dgdx_tilde_of_x(x)   << " ";

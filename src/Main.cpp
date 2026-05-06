@@ -60,7 +60,7 @@ int main(int argc, char **argv){
   rec.output("recombination.txt");
   
   // Remove when module is completed
-  return 0;
+  // return 0;
 
   //=========================================================================
   // Module III
@@ -72,8 +72,10 @@ int main(int argc, char **argv){
   pert.info();
   
   // Output perturbation quantities
-  double kvalue = 0.01 / Constants.Mpc;
-  pert.output(kvalue, "perturbations_k0.01.txt");
+  std::vector<double> kvalues = {0.1, 0.01, 0.001};
+  for(const double & k : kvalues){
+    pert.output(k / Constants.Mpc, "perturbations_k" + std::to_string(k) + ".txt");
+  }
   
   // Remove when module is completed
   return 0;
@@ -93,4 +95,4 @@ int main(int argc, char **argv){
 }
 
 // How to compile:
-// g++ Main.cpp BackgroundCosmology.cpp RecombinationHistory.cpp Utils.cpp Spline.cpp ODESolver.cpp -std=c++20 -I. -L$HOME/local/gsl-2.6/lib -lgsl -lgslcblas -lm -o name_of_executable
+// g++ Main.cpp BackgroundCosmology.cpp RecombinationHistory.cpp Perturbations.cpp Utils.cpp Spline.cpp ODESolver.cpp -std=c++20 -I. -L$HOME/local/gsl-2.6/lib -lgsl -lgslcblas -lm -o main

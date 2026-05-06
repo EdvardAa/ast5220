@@ -66,7 +66,7 @@ plt.savefig("figures2/Xe_vs_x_reion.pdf")
 plt.show()
 
 plt.plot(x[:-3],tau[:-3], label=r"$\tau(x)$")
-plt.plot(x[:-3], dtau_dx[:-3], label=r"$d\tau/dx$")
+plt.plot(x[:-3], -dtau_dx[:-3], label=r"$-d\tau/dx$")
 plt.plot(x[:-3], ddtau_ddx[:-3], label=r"$d^2\tau/dx^2$")
 plt.axvline(x_decoupling_scattering, color='green', linestyle=':', 
             label=f'Scattering x={x_decoupling_scattering:.2f}')
@@ -79,7 +79,7 @@ plt.savefig("figures2/tau_and_derivatives_vs_x.pdf")
 plt.show()
 
 plt.plot(x[:-3], tau_reion[:-3], label=r"$\tau$ with reionization")
-plt.plot(x[:-3], dtau_dx_reion[:-3], label=r"$d\tau/dx$ with reionization")
+plt.plot(x[:-3], -dtau_dx_reion[:-3], label=r"$-d\tau/dx$ with reionization")
 plt.plot(x[:-3], ddtau_ddx_reion[:-3], label=r"$d^2\tau/dx^2$ with reionization")
 plt.axvline(x_decoupling_scattering, color='green', linestyle=':', 
             label=f'Scattering x={x_decoupling_scattering:.2f}')
@@ -96,6 +96,7 @@ plt.plot(x, dg_tildedx / np.sum(np.abs(dg_tildedx)), label=r"$d\tilde{g}/dx$", l
 plt.plot(x, ddg_tildeddx / np.sum(np.abs(ddg_tildeddx)), label=r"$d^2\tilde{g}/dx^2$", linestyle=":")
 plt.xlabel("x", fontsize=18)
 plt.ylabel(r"$\tilde{g}$ [1]", fontsize=18)
+plt.xlim(-8,0)
 plt.title(r"Scaled visibility function $\tilde{g}$ and derivatives", fontsize=20)
 plt.legend(fontsize=12)
 plt.savefig("figures2/g_tilde_and_derivatives_vs_x.pdf")
@@ -106,6 +107,7 @@ plt.plot(x, dg_tildedx_reion / np.sum(np.abs(dg_tildedx_reion)), label=r"$d\tild
 plt.plot(x, ddg_tildeddx_reion / np.sum(np.abs(ddg_tildeddx_reion)), label=r"$d^2\tilde{g}/dx^2$ with reionization", linestyle=":")
 plt.xlabel("x", fontsize=18)
 plt.ylabel(r"$\tilde{g}$ [1]", fontsize=18)
+plt.xlim(-8,0)
 plt.title(r"Scaled visibility function $\tilde{g}$ with reionization", fontsize=20)
 plt.legend(fontsize=12)
 plt.savefig("figures2/g_tilde_and_derivatives_vs_x_reion.pdf")
