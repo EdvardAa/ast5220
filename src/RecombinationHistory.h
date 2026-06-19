@@ -13,7 +13,7 @@ class RecombinationHistory{
   private:
 
     //Constants we pre-compute and store in this class
-    double pi;
+    const double pi = Constants.pi;
     double H0;
     double rho_c0;
     double Lambda_alpha_coefficient;

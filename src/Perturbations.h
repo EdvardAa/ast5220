@@ -16,6 +16,8 @@ using Vector2D = std::vector<Vector>;
 class Perturbations{
   private:
 
+    const double pi = Constants.pi;
+
     BackgroundCosmology *cosmo = nullptr;
     RecombinationHistory *rec  = nullptr;
    

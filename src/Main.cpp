@@ -38,14 +38,11 @@ int main(int argc, char **argv){
   cosmo.info();
   
   // Output background evolution quantities
-  cosmo.output("cosmology.txt");
+  cosmo.output("data/cosmology.txt");
 
   // Do the supernova fits. Uncomment when you are ready to run this
   // Make sure you read the comments on the top of src/SupernovaFitting.h
-  // mcmc_fit_to_supernova_data("data/supernovadata.txt", "results_supernovafitting.txt");
-
-  // Remove when module is completed
-  // return 0;
+  // mcmc_fit_to_supernova_data("data/supernovadata.txt", "data/results_supernovafitting.txt");
 
   //=========================================================================
   // Module II
@@ -57,10 +54,7 @@ int main(int argc, char **argv){
   rec.info();
 
   // Output recombination quantities
-  rec.output("recombination.txt");
-  
-  // Remove when module is completed
-  // return 0;
+  rec.output("data/recombination.txt");
 
   //=========================================================================
   // Module III
@@ -74,11 +68,8 @@ int main(int argc, char **argv){
   // Output perturbation quantities
   std::vector<double> kvalues = {0.1, 0.01, 0.001};
   for(const double & k : kvalues){
-    pert.output(k / Constants.Mpc, "perturbations_k" + std::to_string(k) + ".txt");
+    pert.output(k / Constants.Mpc, "data/perturbations_k" + std::to_string(k) + ".txt");
   }
-  
-  // Remove when module is completed
-  return 0;
   
   //=========================================================================
   // Module IV
@@ -86,13 +77,15 @@ int main(int argc, char **argv){
 
   PowerSpectrum power(&cosmo, &rec, &pert, A_s, n_s, kpivot_mpc);
   power.solve();
-  power.output("cells.txt");
+  power.output_ell("data/cells.txt");
+  power.output_k("data/k_spectra.txt");
   
-  // Remove when module is completed
+  
+  Utils::EndTiming("Everything");
+  
   return 0;
 
-  Utils::EndTiming("Everything");
 }
 
 // How to compile:
-// g++ Main.cpp BackgroundCosmology.cpp RecombinationHistory.cpp Perturbations.cpp Utils.cpp Spline.cpp ODESolver.cpp -std=c++20 -I. -L$HOME/local/gsl-2.6/lib -lgsl -lgslcblas -lm -o main
+// g++ Main.cpp BackgroundCosmology.cpp RecombinationHistory.cpp Perturbations.cpp PowerSpectrum.cpp Utils.cpp Spline.cpp ODESolver.cpp -std=c++20 -fopenmp -D_USEOPENMP -I. -L$HOME/local/gsl-2.6/lib -lgsl -lgslcblas -lm -o main

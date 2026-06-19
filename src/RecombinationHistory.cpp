@@ -10,7 +10,6 @@ RecombinationHistory::RecombinationHistory(
   cosmo(cosmo),
   Yp(Yp)
 {
-    pi = std::numbers::pi;
     //Physical constants
     const double k_b         = Constants.k_b;
     const double G           = Constants.G;
@@ -74,7 +73,6 @@ void RecombinationHistory::solve_number_density_electrons(){
   Xe_saha_arr[0] = 1.0;
   double n_H0 = cosmo->get_OmegaB(0.0) * 3*cosmo->get_H0()*cosmo->get_H0() / (8*pi*Constants.G * Constants.m_H);
   ne_arr[0] = n_H0; // Initial condition for ne at early times (before recombination) is the baryon number density today
-  std::cout << cosmo->get_TCMB(0.0) << std::endl;
 
   // Calculate recombination history
   bool saha_regime = true;
@@ -174,14 +172,6 @@ void RecombinationHistory::solve_number_density_electrons(){
   Xe_of_x_spline.create(x_array, Xe_arr, "Xe_of_x");
   Xe_reionization_of_x_spline.create(x_array, Xe_reionization, "Xe_reionization_of_x");
   Xe_saha_of_x_spline.create(x_array, Xe_saha_arr, "Xe_saha_of_x");
-    
-
-  //=============================================================================
-  // TODO: Spline the result. Implement and make sure the Xe_of_x, ne_of_x,
-  // functions are working
-  //=============================================================================
-  //...
-  //Done I think, but check that the functions are working correctly
 
   Utils::EndTiming("Xe");
 }
@@ -327,9 +317,9 @@ void RecombinationHistory::solve_for_optical_depth_tau(){
   Vector g_tilde_Saha_array(npts);
 
   for(int i = 0; i < npts; i++){
-    g_tilde_array[i] = dtaudx_of_x(x_array[i]) * exp(-tau_array[i]);
-    g_tilde_reionization_array[i] = dtaudx_reionization_of_x(x_array[i]) * exp(-tau_reion_array[i]);
-    g_tilde_Saha_array[i] = tau_saha_of_x_spline.deriv_x(x_array[i]) * exp(-tau_Saha_array[i]);
+    g_tilde_array[i] = -dtaudx_of_x(x_array[i]) * exp(-tau_array[i]);
+    g_tilde_reionization_array[i] = -dtaudx_reionization_of_x(x_array[i]) * exp(-tau_reion_array[i]);
+    g_tilde_Saha_array[i] = -tau_saha_of_x_spline.deriv_x(x_array[i]) * exp(-tau_Saha_array[i]);
   }
 
   // Find x_last_scattering where g_tilde is maximum
@@ -454,14 +444,14 @@ double RecombinationHistory::Xe_reionization_of_x(double x) const{
 
 double RecombinationHistory::ne_of_x(double x) const{
 
-  double n_H = cosmo->get_OmegaB(0.0) * 3*cosmo->get_H0()*cosmo->get_H0() / (8*M_PI*Constants.G * Constants.m_H) * exp(-3*x);
+  double n_H = cosmo->get_OmegaB(0.0) * 3*cosmo->get_H0()*cosmo->get_H0() / (8*pi*Constants.G * Constants.m_H) * exp(-3*x);
 
   return Xe_of_x_spline(x) * n_H;
 }
 
 double RecombinationHistory::ne_reionization_of_x(double x) const{
 
-  double n_H = cosmo->get_OmegaB(0.0) * 3*cosmo->get_H0()*cosmo->get_H0() / (8*M_PI*Constants.G * Constants.m_H) * exp(-3*x);
+  double n_H = cosmo->get_OmegaB(0.0) * 3*cosmo->get_H0()*cosmo->get_H0() / (8*pi*Constants.G * Constants.m_H) * exp(-3*x);
 
   return Xe_reionization_of_x_spline(x) * n_H;
 }

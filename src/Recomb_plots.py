@@ -6,7 +6,7 @@ x_decoupling_recombination_Saha = -7.36938
 x_decoupling_scattering = -6.98843
 x_decoupling_Saha_scattering = -5.18139
 
-data = np.loadtxt("recombination.txt")
+data = np.loadtxt("data/recombination.txt")
 x = data[:,0]
 index = np.argmin(np.abs(x - (-12.0)))
 x = x[index:]
@@ -91,23 +91,24 @@ plt.legend(fontsize=12)
 plt.savefig("figures2/tau_and_derivatives_vs_x_reion.pdf")
 plt.show()
 
-plt.plot(x, g_tilde / np.sum(np.abs(g_tilde)), label=r"$\tilde{g}(x)$")
-plt.plot(x, dg_tildedx / np.sum(np.abs(dg_tildedx)), label=r"$d\tilde{g}/dx$", linestyle="--")
-plt.plot(x, ddg_tildeddx / np.sum(np.abs(ddg_tildeddx)), label=r"$d^2\tilde{g}/dx^2$", linestyle=":")
+idx_trunc0 = np.argmin(abs(x+7.5))
+idx_trunc1 = np.argmin(abs(x+6))
+plt.plot(x[idx_trunc0:idx_trunc1], g_tilde[idx_trunc0:idx_trunc1] / np.sum(np.abs(g_tilde)), label=r"$\tilde{g}(x)$")
+plt.plot(x[idx_trunc0:idx_trunc1], dg_tildedx[idx_trunc0:idx_trunc1] / np.sum(np.abs(dg_tildedx)), label=r"$d\tilde{g}/dx$", linestyle="--")
+plt.plot(x[idx_trunc0:idx_trunc1], ddg_tildeddx[idx_trunc0:idx_trunc1] / np.sum(np.abs(ddg_tildeddx)), label=r"$d^2\tilde{g}/dx^2$", linestyle=":")
 plt.xlabel("x", fontsize=18)
 plt.ylabel(r"$\tilde{g}$ [1]", fontsize=18)
-plt.xlim(-8,0)
 plt.title(r"Scaled visibility function $\tilde{g}$ and derivatives", fontsize=20)
 plt.legend(fontsize=12)
 plt.savefig("figures2/g_tilde_and_derivatives_vs_x.pdf")
 plt.show()
 
-plt.plot(x, g_tilde_reion / np.sum(np.abs(g_tilde_reion)), label=r"$\tilde{g}$ with reionization")
-plt.plot(x, dg_tildedx_reion / np.sum(np.abs(dg_tildedx_reion)), label=r"$d\tilde{g}/dx$ with reionization", linestyle="--")
-plt.plot(x, ddg_tildeddx_reion / np.sum(np.abs(ddg_tildeddx_reion)), label=r"$d^2\tilde{g}/dx^2$ with reionization", linestyle=":")
+idx_trunc2 = np.argmin(abs(x+1))
+plt.plot(x[idx_trunc0:idx_trunc2], g_tilde_reion[idx_trunc0:idx_trunc2] / np.sum(np.abs(g_tilde_reion)), label=r"$\tilde{g}$ with reionization")
+plt.plot(x[idx_trunc0:idx_trunc2], dg_tildedx_reion[idx_trunc0:idx_trunc2] / np.sum(np.abs(dg_tildedx_reion)), label=r"$d\tilde{g}/dx$ with reionization", linestyle="--")
+plt.plot(x[idx_trunc0:idx_trunc2], ddg_tildeddx_reion[idx_trunc0:idx_trunc2] / np.sum(np.abs(ddg_tildeddx_reion)), label=r"$d^2\tilde{g}/dx^2$ with reionization", linestyle=":")
 plt.xlabel("x", fontsize=18)
 plt.ylabel(r"$\tilde{g}$ [1]", fontsize=18)
-plt.xlim(-8,0)
 plt.title(r"Scaled visibility function $\tilde{g}$ with reionization", fontsize=20)
 plt.legend(fontsize=12)
 plt.savefig("figures2/g_tilde_and_derivatives_vs_x_reion.pdf")

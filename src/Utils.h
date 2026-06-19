@@ -15,6 +15,8 @@
 
 // The constants used in this code. Everything is here in SI units
 extern struct ConstantsAndUnits {
+  const double pi = M_PI;
+
   // Basic units (here we use SI)
   const double m           = 1.0;                         // Length (in meters)
   const double s           = 1.0;                         // Time (in seconds)
@@ -55,6 +57,7 @@ extern struct ConstantsAndUnits {
   // Include polarization and/or neutrinos?
   const bool polarization  = true;
   const bool neutrinos     = true;
+  const bool reionization  = true;
 
   // For integration of perturbations (number of equations and positions in arrays)
   const int n_scalars           = 5;

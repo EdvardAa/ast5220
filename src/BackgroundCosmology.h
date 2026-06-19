@@ -8,6 +8,8 @@ using Vector = std::vector<double>;
 
 class BackgroundCosmology{
   private:
+
+    const double pi = Constants.pi;
    
     // Cosmological parameters
     double h;                       // Little h = H0/(100km/s/Mpc)
